@@ -6,7 +6,7 @@ class Login extends CI_Controller {
 	function __construct(){
         /* Session Checking Start*/
         parent::__construct();  
-        $this->load->model("login_model");
+        //$this->load->model("login_model");
         if ($this->session->userdata('is_loggedin')) {
             $user_type = $this->session->userdata('user_type');
             if($user_type==1)
