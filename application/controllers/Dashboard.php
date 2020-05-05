@@ -7,7 +7,7 @@ class Dashboard extends CI_Controller {
 	function __construct(){
         /* Session Checking Start*/
         parent::__construct();  
-        $this->load->model('login_model'); 
+        $this->load->model('Login_model'); 
         $this->load->model('common_model'); 
         
      }
