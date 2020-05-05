@@ -20,8 +20,22 @@ if($this->session->userdata('user_type')==1)
       <li class="<?php if($segment=="new_Job_orders"){ echo 'active';}?>"><a href="<?=base_url('admin/dashboard/new_Job_orders');?>">New Job Orders</a></li> 
       <li class="<?php if($segment=="pending_Job_orders"){ echo 'active';}?>"><a href="<?=base_url('admin/dashboard/pending_Job_orders');?>">Pending Job Orders</a></li>
       <li class="<?php if($segment=="finished_Job_orders"){ echo 'active';}?>"><a href="<?=base_url('admin/dashboard/finished_Job_orders');?>">Finshed Job Orders</a></li>
-      <li><a href="<?=base_url('logout');?>">Logout</a></li>
+ 
     </ul>
+
+     <div class="dropdown" style="float: right">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+         <i class="fa fa-chevron-down"></i>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <ul>
+          <li><a class="dropdown-item" href="#">Change Password</a></li>
+          <li><a class="dropdown-item" href="<?=base_url('logout');?>">Logout</a></li>
+           <ul>
+         
+        </div>
+      </div>
+ 
   </div>
 </nav>
 <?php
@@ -42,8 +56,21 @@ elseif($this->session->userdata('user_type')==2)
       <li class="<?php if($segment=="new_Job_orders"){ echo 'active';}?>"><a href="<?=base_url('employee/dashboard/new_Job_orders');?>">New Job Orders</a></li> 
       <li class="<?php if($segment=="pending_Job_orders"){ echo 'active';}?>"><a href="<?=base_url('employee/dashboard/pending_Job_orders');?>">Pending Job Orders</a></li>
       <li class="<?php if($segment=="finished_Job_orders"){ echo 'active';}?>"><a href="<?=base_url('employee/dashboard/finished_Job_orders');?>">Finshed Job Orders</a></li>
-      <li><a href="<?=base_url('logout');?>">Logout</a></li>
     </ul>
+    
+     <div class="dropdown" style="float: right">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+           <i class="fa fa-chevron-down"></i>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <ul>
+          <li><a class="dropdown-item" href="#">Change Password</a></li>
+          <li><a class="dropdown-item" href="<?=base_url('logout');?>">Logout</a></li>
+           <ul>
+         
+        </div>
+      </div>
+  
   </div>
 </nav>
   <?php
@@ -65,8 +92,20 @@ else
       <li class="<?php if($segment=="under_approval"){ echo 'active';}?>"><a href="<?=base_url('client/dashboard/under_approval');?>">Under approval Job Orders</a></li> 
       <li class="<?php if($segment=="pending_Job_orders"){ echo 'active';}?>"><a href="<?=base_url('client/dashboard/pending_Job_orders');?>">Pending / Review Job Orders</a></li>
       <li class="<?php if($segment=="finished_Job_orders"){ echo 'active';}?>"><a href="<?=base_url('client/dashboard/finished_Job_orders');?>">Finshed Job Orders</a></li>
-      <li><a href="<?=base_url('logout');?>">Logout</a></li>
     </ul>
+     
+     <div class="dropdown" style="float: right">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i class="fa fa-chevron-down"></i>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <ul>
+          <li><a class="dropdown-item" href="#">Change Password</a></li>
+          <li><a class="dropdown-item" href="<?=base_url('logout');?>">Logout</a></li>
+           <ul>
+        </div>
+      </div>
+  
   </div>
 </nav>
   <?php
