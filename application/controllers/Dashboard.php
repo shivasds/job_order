@@ -8,6 +8,7 @@ class Dashboard extends CI_Controller {
         /* Session Checking Start*/
         parent::__construct();  
         $this->load->model('login_model'); 
+        $this->load->model('common_model'); 
         
      }
   function logout() {
@@ -15,6 +16,7 @@ class Dashboard extends CI_Controller {
         $this->session->unset_userdata('is_loggedin');
             redirect(base_url());       
     }
+    
  
  
   }

@@ -56,6 +56,25 @@ public function duplicate_check($table,$name){
             )
         );
     }
+    public function getfilenames($id='')
+    {
+        $query = $this->db->select("file_name")
+        ->where("j_id",$id)
+        ->from("upload_files");
+        return $query->get()->result();
+
+    }
+    function get_JO_data($id){
+        $this->db->select('jo.*,u.name as user_name,s.name as status');
+        $this->db->from('extra_job_order as jo');
+        $this->db->where('jo.j_id',$id); 
+        $this->db->join('user as u','u.id=jo.emp_id');
+        $this->db->join('status as s','s.id=jo.status');
+        $this->db->order_by('jo.date_added','desc');
+        $query=$this->db->get();
+        
+        return $query?$query->result():false;
+    }
     
 }
 

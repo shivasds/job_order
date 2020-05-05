@@ -1,9 +1,9 @@
 var base_url = base_url;
 //alert(base_url);
 $(".gallery").dropzone({
-        url: "../../uploads",
+        url: "upload_files",
         maxFilesize: 1000,
-        acceptedFiles: 'image/*',
+       // acceptedFiles: 'image/*',
         init: function () {
             var submit2 = document.getElementById('submit2');
             if (this.getUploadingFiles().length != 0 && this.getQueuedFiles().length != 0) {

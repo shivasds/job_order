@@ -30,59 +30,141 @@ class Dashboard extends CI_Controller {
             $data['title'] = "Client New Job Orders ";
             $where = array("active"=>1);
             $data['job_order_type'] = $this->common_model->getWhere($where,'order_types');
-             if(!empty($_FILES['images']['name'])){
-                
-            // Set preference
-            $config['upload_path'] = 'uploads/';    
-            $config['allowed_types'] = 'jpg|jpeg|png|gif';
-            $config['max_size']    = '1024'; // max_size in kb
-            $config['file_name'] = $_FILES['images']['name'];
-                    
-            //Load upload library
-            $this->load->library('upload',$config);         
-                
-            // File upload
-            if($this->upload->do_upload('file')){
-                // Get data about the file
-                $uploadData = $this->upload->data();
-            }
-            else
-            {
-                echo "empty";
-            }
+          
             if($this->input->post())
             {
-                echo $this->input->post('order_type');
+                $data = array(
+                        "job_type" => $this->input->post('order_type'),
+                        "client_id" => $this->input->post('client_id'),
+                        "notes" => $this->input->post('notes'),
+                        "title" => $this->input->post('jo_title'),
+                        "date_added" =>date('Y-m-d H:m:i')
+                );
+
+                $property_id = $this->common_model->insertRow($data, 'job_order'); 
+                
                 $gallery = $this->input->post('images');
-                print_r($gallery);
+                //print_r($gallery);die;
                 if ($gallery) {
                     foreach ($gallery as $image) {
                         $exploded = explode('/', $image);
-                        // $this->properties_model->insertRow(array(
-                        //     'property_id' => $property_id,
-                        //     'image' => 'uploads/' . $slug . '/' . end($exploded)
-                        // ), 'property_images');
-                        rename($image, 'uploads/' . $slug . '/' . end($exploded));
-                        print_r($exploded);
+                        $this->common_model->insertRow(array(
+                            'j_id' => $property_id,
+                            'file_name' => 'uploads/required_files/' . end($exploded)
+                        ), 'upload_files');
+                        //  rename($image, 'uploads/required_files/' . end($exploded));
+                        //print_r($exploded);
                     }
                 }
-                die;
+                $this->session->set_flashdata('success', 'Job Order Placed Successfully');
+               redirect(base_url('client/dashboard/new_Job_orders'));
              
             }
            
-        }
 
             $this->load->view("client/new_job_orders",$data);
          }
          public function pending_Job_orders($value='')
          {
             $data['title'] = "Client Pending Job Orders ";
+             $where = array("status"=>1,"client_id"=>$this->session->userdata('id'),"emp_id!="=>0);
+             $data['pending'] = $this->common_model->getWhere($where,'job_order');
+             $where = array("active"=>1);
+    $data['status'] = $this->common_model->getWhere($where,'status');
              $this->load->view("client/pending_Job_orders",$data);
          }
          public function finished_job_orders($value='')
          {
             $data['title'] = "Client Finished Job Orders";
+             $where = array("status"=>4,"client_id"=>$this->session->userdata('id'));
+             $data['finished'] = $this->common_model->getWhere($where,'job_order');
              $this->load->view("client/finished_job_orders",$data);
          }
+         public function under_approval($value='')
+         {
+             $data['title'] = "Client Under Approval Job Orders";
+             $where = array("emp_id"=>0,"client_id"=>$this->session->userdata('id'));
+             $data['under_approval'] = $this->common_model->getWhere($where,'job_order');
+             $this->load->view("client/under_approval_job_orders",$data);
+         }
+          public function upload_files($folder = 'required_files')
+    {
+        if (empty($_FILES['file']['name'])) {
+
+        } else {
+            if ($_FILES['file']['error'] == 0) {
+                $filetype = null;
+                //upload and update the file
+                $config['upload_path'] = './uploads/' . $folder . '/';
+                $config['max_size'] = '102428800';
+                $config['encrypt_name'] = TRUE;
+                $config['allowed_types'] = 'pdf';
+                $type = $_FILES['file']['type'];
+                switch ($type) {
+                    case 'image/gif':
+                    case 'image/jpg':
+                    case 'image/png':
+                    case 'image/jpeg':
+                    {
+                        $filetype = 0;
+                        $config['allowed_types'] = 'gif|jpg|png|jpeg|pdf';
+                        break;
+                    }
+                }
+                $config['overwrite'] = false;
+                $config['remove_spaces'] = true;
+                if (!file_exists('./uploads/' . $folder)) {
+                    if (!mkdir('./uploads/' . $folder . '/', 0755, true)) {
+
+                    }
+                }
+                $microtime = microtime(true) * 10000;
+                $this->load->library('upload');
+                $this->upload->initialize($config);
+                if ($this->upload->do_upload('file', $microtime)) {
+                    echo json_encode(array(
+                        'type' => $filetype,
+                        'path' => 'uploads/' . $folder . '/' . $this->upload->file_name
+                    ));
+                }
+            }
+        }
+        exit;
+    }
+
+    public function delete_files($table_of_image = 'upload_files')
+    {
+        $path = $this->input->post('path');
+        echo unlink('./' . $path);
+        $this->common_model->deleteWhere(array('image' => $path), $table_of_image);
+        //echo unlink('./' . $path);
+    }
+    public function edit_job_order_deatails($value='')
+             {
+                 $j_id = $this->input->post('id');
+                 $emp_id = $this->input->post('emp_id');
+                 $notes = $this->input->post('notes');
+                 $status = $this->input->post('status');
+                 $where = array("id"=>$j_id);
+                 $data = array("client_id"=>$emp_id,"notes"=>$notes,"status"=>$status,"is_new"=>0);
+                 $this->common_model->updateWhere($where,$data,'job_order');
+                 $data1 = array("j_id"=>$j_id,"emp_id"=>$emp_id,"notes"=>$notes,"status"=>$status,"date_added"=>date("Y-m-d H:m:i"));
+                 $this->common_model->insertRow($data1,'extra_job_order');
+             }
+public function get_job_order_details($value='')
+    {
+      $id = $this->input->get_post("id");
+      $indiv_callback_data = $this->common_model->get_JO_data($id); 
+        $previous_callback = "";
+        foreach ($indiv_callback_data as $callback_data) {
+            $previous_callback .= $callback_data->status."****".$callback_data->date_added."****".$callback_data->user_name;
+            $previous_callback .= "\n---------------------------------\n";
+           $previous_callback .= $callback_data->notes."\n\n";
+        }
+        $data['previous_callback'] = $previous_callback;
+        print_r($data['previous_callback']);
+
+    }
+
  
   }

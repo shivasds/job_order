@@ -120,17 +120,38 @@ class Dashboard extends CI_Controller {
                 public function new_Job_orders($value='')
              {
                 $data['title'] = "Admin New job Orders";
+                $where = array("is_new"=>1,"emp_id" => 0);
+                $data['new'] = $this->common_model->getWhere($where,'job_order');
+                $where1= array("type"=>2);
+                $data['emp'] = $this->common_model->getWhere($where1,'user');
                  $this->load->view("admin/new_job_orders",$data);
              }
              public function pending_Job_orders($value='')
              {
                 $data['title'] = "Admin Pending job Orders";
+                $where = array("status"=>2);
+             $data['pending'] = $this->common_model->getWhere($where,'job_order');
                  $this->load->view("admin/pending_Job_orders",$data);
              }
              public function finished_job_orders($value='')
              {
                 $data['title'] = "Admin Finished job Orders";
+                $where = array("status"=>4);
+                $data['finished'] = $this->common_model->getWhere($where,'job_order');
                  $this->load->view("admin/finished_job_orders",$data);
+             }
+
+
+             public function edit_job_order_deatails($value='')
+             {
+                 $j_id = $this->input->post('id');
+                 $emp_id = $this->input->post('emp_id');
+                 $notes = $this->input->post('notes');
+                 $where = array("id"=>$j_id);
+                 $data = array("emp_id"=>$emp_id,"notes"=>$notes);
+                 $this->common_model->updateWhere($where,$data,'job_order');
+                 $data1 = array("j_id"=>$j_id,"emp_id"=>$emp_id,"notes"=>$notes,"status"=>2,"date_added"=>date("Y-m-d H:m:i"));
+                 $this->common_model->insertRow($data1,'extra_job_order');
              }
  
   }

@@ -10,7 +10,7 @@ class Login_model extends CI_Model {
     }
     public function user_login($username,$password,$type){
         $password = md5($password);
-        $query = $this->db->select()
+        $query = $this->db->select('*')
             ->where('username',$username)
 
             ->where('password',$password)

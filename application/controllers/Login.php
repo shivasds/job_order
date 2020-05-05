@@ -29,7 +29,6 @@ class Login extends CI_Controller {
         if($user_type)
         {
         $data = $this->login_model->user_login($username,$password,$user_type);
-
         if(!$data)
         {
             $this->session->set_flashdata('error', 'User Id or Password Incorrect');
@@ -37,7 +36,7 @@ class Login extends CI_Controller {
         }
         else
         {
-            $this->session->set_userdata($data);
+            $this->session->set_userdata(json_decode(json_encode($data),true));
             $this->session->set_userdata('is_loggedin',true);
             $this->session->set_userdata('user_type',$user_type);
             if($user_type==1)
