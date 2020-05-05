@@ -63,6 +63,7 @@ class login_model extends CI_Model {
 
             $this->email->send();
             return true;
+            
         }
         else
             return false;
