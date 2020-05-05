@@ -6,7 +6,7 @@ class Login extends CI_Controller {
 	function __construct(){
         /* Session Checking Start*/
         parent::__construct();  
-        $this->load->model("Login_model");
+        $this->load->model("login_model");
         if ($this->session->userdata('is_loggedin')) {
             $user_type = $this->session->userdata('user_type');
             if($user_type==1)
@@ -24,11 +24,11 @@ class Login extends CI_Controller {
     {
         $username = $this->input->post('username');
         $password = $this->input->post('password');
-        $type_array=$this->Login_model->get_user_type($username);
+        $type_array=$this->login_model->get_user_type($username);
         $user_type=$type_array['type'];
         if($user_type)
         {
-        $data = $this->Login_model->user_login($username,$password,$user_type);
+        $data = $this->login_model->user_login($username,$password,$user_type);
         if(!$data)
         {
             $this->session->set_flashdata('error', 'User Id or Password Incorrect');
