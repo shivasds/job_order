@@ -128,7 +128,7 @@ class Dashboard extends CI_Controller {
                 $config['upload_path'] = './uploads/' . $folder . '/';
                 $config['max_size'] = '102428800';
                 $config['encrypt_name'] = TRUE;
-                $config['allowed_types'] = 'pdf';
+                $config['allowed_types'] = 'pdf|FLV|MKV|MOV|MP4|WEBM|WMV';
                 $type = $_FILES['file']['type'];
                 switch ($type) {
                     case 'image/gif':
