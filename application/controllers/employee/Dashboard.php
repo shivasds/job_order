@@ -42,7 +42,7 @@ class Dashboard extends CI_Controller {
       $this->zip->download(time().".zip");
       redirect(base_url("employee/dashboard/new_job_orders"));
     }
-     $this->load->view("employee/new_job_orders",$data);
+     $this->load->view("employee/job_orders",$data);
  }
  public function pending_Job_orders($value='')
  {

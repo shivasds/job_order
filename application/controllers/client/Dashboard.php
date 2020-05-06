@@ -62,7 +62,7 @@ class Dashboard extends CI_Controller {
             }
            
 
-            $this->load->view("client/new_job_orders",$data);
+            $this->load->view("client/job_orders",$data);
          }
          public function pending_Job_orders($value='')
          {
