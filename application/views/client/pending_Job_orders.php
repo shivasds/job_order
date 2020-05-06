@@ -106,6 +106,18 @@
 <script>
  function update_jo()
   {
+    if($("#status").val()=='')
+    {
+      $("#status").focus();
+      alert("Please Select Status Of the Job Order");
+      return false;
+    }
+    if($("#m_notes").val()=='')
+    {
+      $("#m_notes").focus();
+      alert("Please Enter Notes!");
+      return false;
+    }
     var data = {
             'id':$('#mhid').val(),
             'emp_id':$('#m_emp').val(),

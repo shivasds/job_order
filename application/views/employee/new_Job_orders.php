@@ -47,11 +47,13 @@
 
         $.ajax({
             type:"POST",
-            url: "<?php echo base_url()?>dashboard/get_job_order_details",
+            url: "<?php echo base_url()?>employee/dashboard/get_job_order_details",
             data:{id:v},
             success:function(data){
-               $("#m_down").attr("href", "get_job_order_details?id="+v);
-               $("#m_down").attr('target','_blank')
+               $("#m_down").attr("href", "download_files?id="+v);
+              // $("#m_down").attr('target','_blank')
+               var box = $("#m_pre_data");
+                box.val(box.val() + data);
             }
         });
     }
@@ -74,7 +76,7 @@
         <input type="hidden" name="m_emp" id="m_emp" value="<?=$this->session->userdata('id')?>">
                 <div class="col-md-6 form-group">        
                 <label for="p_note">Previous Note:</label>
-                <textarea class="form-control" rows="5" id="pm_notes" name="pm_notes"></textarea>
+                <textarea class="form-control" rows="5" id="m_pre_data" name="m_pre_data" readonly=""></textarea>
                 </div>
                 <div class="col-md-6 form-group">        
                 <label for="note">Note:</label>
@@ -104,6 +106,18 @@
 <script>
  function update_jo()
   {
+    if($("#status").val()=='')
+    {
+      $("#status").focus();
+      alert("Please Select Status Of the Job Order");
+      return false;
+    }
+    if($("#m_notes").val()=='')
+    {
+      $("#m_notes").focus();
+      alert("Please Enter Notes!");
+      return false;
+    }
     var data = {
             'id':$('#mhid').val(),
             'emp_id':$('#m_emp').val(),

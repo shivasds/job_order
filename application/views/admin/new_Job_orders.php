@@ -102,6 +102,18 @@
 <script>
  function update_jo()
   {
+    if($("#m_emp").val()=='')
+    {
+      $("#m_emp").focus();
+      alert("Please Select Employee");
+      return false;
+    }
+    if($("#m_notes").val()=='')
+    {
+      $("#m_notes").focus();
+      alert("Please Enter Notes!");
+      return false;
+    }
     var data = {
             'id':$('#mhid').val(),
             'emp_id':$('#m_emp').val(),
