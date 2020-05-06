@@ -124,7 +124,7 @@ class Dashboard extends CI_Controller {
                 $data['new'] = $this->common_model->getWhere($where,'job_order');
                 $where1= array("type"=>2);
                 $data['emp'] = $this->common_model->getWhere($where1,'user');
-                 $this->load->view("admin/new_job_orders",$data);
+                 $this->load->view("admin/job_orders",$data);
              }
              public function pending_Job_orders($value='')
              {
