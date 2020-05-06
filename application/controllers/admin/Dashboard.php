@@ -58,7 +58,16 @@ class Dashboard extends CI_Controller {
  }
  public function check_user(){
         $code=$this->input->post('code');
-        $query=$this->common_model->duplicate_check('user',$code);
+        $query=$this->common_model->duplicate_check('emails',$code);
+        $data = array(
+          'count' =>$query
+        );
+        header('Content-Type: application/json');
+        echo json_encode($data);
+    }
+     public function check_email(){
+        $code=$this->input->post('code');
+        $query=$this->common_model->duplicate_check_email('emails',$code);
         $data = array(
           'count' =>$query
         );
@@ -68,6 +77,16 @@ class Dashboard extends CI_Controller {
     function change_status_user(){
         $id=$this->input->post('id');
         $newStatus = $this->common_model->toggle_status('user',$id);
+        $data = array(
+            'id' => $id,
+            'active' => $newStatus
+        );
+        header('Content-Type: application/json');
+        echo json_encode($data);
+    }
+    function change_status_mail(){
+        $id=$this->input->post('id');
+        $newStatus = $this->common_model->toggle_status('emails',$id);
         $data = array(
             'id' => $id,
             'active' => $newStatus
@@ -144,14 +163,73 @@ class Dashboard extends CI_Controller {
 
              public function edit_job_order_deatails($value='')
              {
-                 $j_id = $this->input->post('id');
-                 $emp_id = $this->input->post('emp_id');
-                 $notes = $this->input->post('notes');
+                 $j_id = $this->input->get_post('id');
+                 $emp_id = $this->input->get_post('emp_id');
+                 $notes = $this->input->get_post('notes');
+                 $emp_details = $this->common_model->getWhere(array('id'=>$emp_id),'user');
+                 $client_id = $this->common_model->getWhere(array('id'=>$j_id),'job_order');
+                $client_details = $this->common_model->getWhere(array('id'=>$client_id[0]->client_id),'user');
+                 //print_r($client_details[0]->name);die;
+                 $this->load->library('email');
+            
+                $this->email->initialize(email_config());
+
+                $where = array("active"=>1); 
+
+                $to_emails = $this->common_model->getWhere($where,'emails');
+                $emails ='';
+                foreach ($to_emails as $email) {
+                   $emails .= $email->email.",";
+                }
+                $emails = rtrim($emails, ','); 
+                 
+                $this->email->from($this->session->userdata('email'),$this->session->userdata('name'));
+                $this->email->to($client_details[0]->email.",shiva@secondsdigital.com");
+                $this->email->cc($emails);
+
+                $this->email->subject('Job Order Approved ans Assigned on '.date('Y-m-d'));
+                $this->email->message("Dear ".$client_details[0]->name.",<br> Your New Job Order Approved and assigned to ".$emp_details[0]->name." Mobile : ".$emp_details[0]->mobile);
+                if($this->email->send())
+                {
+                  $this->email->from($this->session->userdata('email'),$this->session->userdata('name'));
+                $this->email->to($emp_details[0]->email);
+                $this->email->cc($emails);
+
+                $this->email->subject('New Job Order Assigned on '.date('Y-m-d'));
+                $this->email->message("Dear ".$emp_details[0]->name.",<br> Your New Job Order is assigned! Please Follow with below notes! <br> ".$notes);
+                $this->email->send();
+                }
+                else
+                {
+                    echo $this->email->print_debugger();
+                    die;
+                } 
                  $where = array("id"=>$j_id);
                  $data = array("emp_id"=>$emp_id,"notes"=>$notes);
                  $this->common_model->updateWhere($where,$data,'job_order');
-                 $data1 = array("j_id"=>$j_id,"emp_id"=>$emp_id,"notes"=>$notes,"status"=>2,"date_added"=>date("Y-m-d H:m:i"));
+                 $data1 = array("j_id"=>$j_id,"emp_id"=>$this->session->userdata('id'),"notes"=>$notes,"status"=>2,"date_added"=>date("Y-m-d H:m:i"));
                  $this->common_model->insertRow($data1,'extra_job_order');
              }
+               public function emails($value='')
+                {
+                $data['title'] = "Mails"; 
+                $data['emails'] = $this->common_model->getAll('emails');
+                if($this->input->post())
+                {
+                    $data = array("email"=>$this->input->post('email'));
+                    $bool = $this->common_model->insertRow($data,'emails');
+                    if($bool)
+                    {
+                        $this->session->set_flashdata('success', 'Email Added Successfully');
+                        redirect(base_url('admin/dashboard/emails'));
+                    }
+                    else
+                    {
+                        $this->session->set_flashdata('error', 'Email Adding Failed');
+                        redirect(base_url('admin/dashboard/emails'));
+                    }
+                }
+                $this->load->view("admin/emails",$data);
+                }
  
   }

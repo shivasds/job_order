@@ -53,7 +53,7 @@
                $("#m_down").attr("href", "download_files?id="+v);
               // $("#m_down").attr('target','_blank')
                var box = $("#m_pre_data");
-                box.val(box.val() + data);
+                box.val(data);
             }
         });
     }

@@ -52,8 +52,9 @@
             success:function(data){
                $("#m_down").attr("href", "download_files?id="+v);
               // $("#m_down").attr('target','_blank')
+             // box.val();
                var box = $("#m_pre_data");
-                box.val(box.val() + data);
+                box.val(data);
             }
         });
     }

@@ -8,8 +8,8 @@ if ( ! function_exists('email_config'))
         // $config['smtp_host']    = 'ssl://smtp.gmail.com';
         // $config['smtp_port']    = '465';
         // $config['smtp_timeout'] = '7';
-        // $config['smtp_user']='miryalashivaprasad87@gmail.com';
-        // $config['smtp_pass']='9866115824';
+        // $config['smtp_user']='pintu19mg@gmail.com';
+        // $config['smtp_pass']='Password1982';
         // $config['charset']    = 'utf-8';
         // $config['newline']    = "\r\n";
         // $config['mailtype'] = 'html'; // or html
@@ -19,12 +19,12 @@ if ( ! function_exists('email_config'))
         // $config['charset'] = 'utf-8';
         // $config['wordwrap'] = TRUE;
         // $config['mailtype'] = 'html';
-        $config['protocol']='smtp';
+$config['protocol']='smtp';
 $config['smtp_host']='ssl://smtp.gmail.com';
 $config['smtp_port']='465';
 $config['smtp_timeout']='30';
-$config['smtp_user']='miryalashivaprasad87@gmail.com';
-$config['smtp_pass']='9866115824';
+$config['smtp_user']='pintu19mg@gmail.com';
+$config['smtp_pass']='Password1982';
 $config['charset']='utf-8';
 $config['newline']="\r\n";
 $config['wordwrap'] = TRUE;

@@ -19,6 +19,17 @@ public function duplicate_check($table,$name){
         $rowcount=$query->num_rows();
         return $rowcount;
     }
+    public function duplicate_check_email($table,$name){
+        $this->db->select();
+        $this->db->from($table);
+        if($table == "email")
+            $this->db->where('email',$name);
+        else
+            $this->db->where('email',$name);
+        $query=$this->db->get();
+        $rowcount=$query->num_rows();
+        return $rowcount;
+    }
     public function toggle_status($table,$id){
         $this->db->select('active');
         $this->db->from($table);
@@ -68,12 +79,26 @@ public function duplicate_check($table,$name){
         $this->db->select('jo.*,u.name as user_name,s.name as status');
         $this->db->from('extra_job_order as jo');
         $this->db->where('jo.j_id',$id); 
-        $this->db->join('user as u','u.id=jo.emp_id');
-        $this->db->join('status as s','s.id=jo.status');
+        $this->db->join('user as u','u.id=jo.emp_id', 'left');
+        $this->db->join('status as s','s.id=jo.status', 'left');
         $this->db->order_by('jo.date_added','desc');
         $query=$this->db->get();
         
         return $query?$query->result():false;
+    }
+    public function jo_closed($id='')
+    {
+        $this->db->select('jo.*,u.name as emp_name,ua.name as client_name,s.name as status, ot.order_type as jo_type');
+        $this->db->from('job_order as jo');
+        $this->db->where('jo.id',$id); 
+        $this->db->join('user as u','u.id=jo.emp_id', 'left');
+        $this->db->join('user as ua','ua.id=jo.client_id', 'left');
+        $this->db->join('order_types as ot','ot.id=jo.job_type', 'left');
+        $this->db->join('status as s','s.id=jo.status', 'left');
+        $this->db->order_by('jo.date_added','desc');
+        $query=$this->db->get();
+        return $query?$query->result():false;
+       // echo $this->db->last_query();
     }
     
 }

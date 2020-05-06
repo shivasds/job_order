@@ -30,6 +30,7 @@ class Dashboard extends CI_Controller {
             $data['title'] = "Client New Job Orders ";
             $where = array("active"=>1);
             $data['job_order_type'] = $this->common_model->getWhere($where,'order_types');
+
           
             if($this->input->post())
             {
@@ -56,6 +57,35 @@ class Dashboard extends CI_Controller {
                         //print_r($exploded);
                     }
                 }
+                $this->load->library('email');
+            
+                $this->email->initialize(email_config());
+
+                $where = array("active"=>1); 
+
+                $to_emails = $this->common_model->getWhere($where,'emails');
+                $emails ='';
+                foreach ($to_emails as $email) {
+                   $emails .= $email->email.",";
+                }
+                $emails = rtrim($emails, ','); 
+                 
+                $this->email->from($this->session->userdata('email'),$this->session->userdata('name'));
+                $this->email->to("shiva@secondsdigital.com");
+                $this->email->cc($emails);
+
+                $this->email->subject('New Job Order Raised on '.date('Y-m-d'));
+                $this->email->message("Dear Pintu,<br> New Job Order Raised, Please Approve and assign.");
+                if($this->email->send())
+                {
+
+                }
+                else
+                {
+                    echo $this->email->print_debugger();
+                    die;
+                }
+        
                 $this->session->set_flashdata('success', 'Job Order Placed Successfully');
                redirect(base_url('client/dashboard/new_Job_orders'));
              
@@ -70,7 +100,7 @@ class Dashboard extends CI_Controller {
              $where = array("status"=>1,"client_id"=>$this->session->userdata('id'),"emp_id!="=>0);
              $data['pending'] = $this->common_model->getWhere($where,'job_order');
              $where = array("active"=>1);
-    $data['status'] = $this->common_model->getWhere($where,'status');
+            $data['status'] = $this->common_model->getWhere($where,'status');
              $this->load->view("client/pending_Job_orders",$data);
          }
          public function finished_job_orders($value='')
@@ -141,10 +171,64 @@ class Dashboard extends CI_Controller {
     }
     public function edit_job_order_deatails($value='')
              {
-                 $j_id = $this->input->post('id');
+                 $j_id = $this->input->get_post('id');
                  $emp_id = $this->input->post('emp_id');
                  $notes = $this->input->post('notes');
                  $status = $this->input->post('status');
+
+                 $emp_email = $this->common_model->getWhere(array('id'=>$j_id),'job_order');
+                 $receive_email = $this->common_model->getWhere(array('id'=>$emp_email[0]->emp_id),'user');
+                 $this->load->library('email');
+            
+                $this->email->initialize(email_config());
+
+                $where = array("active"=>1); 
+
+                $to_emails = $this->common_model->getWhere($where,'emails');
+                $emails ='';
+                foreach ($to_emails as $email) {
+                   $emails .= $email->email.",";
+                }
+                $emails = rtrim($emails, ','); 
+                 
+                $this->email->from($this->session->userdata('email'),$this->session->userdata('name'));
+                $this->email->to($receive_email[0]->email);
+                $this->email->cc($emails);
+                if($status==2)
+                {
+                $this->email->subject('Job Order Pending '.date('Y-m-d'));
+                $this->email->message("Dear ".$receive_email[0]->name.", <br> Job Order is Still Pending, Please Follow Below Notes. <br>".$notes);
+                }
+                elseif ($status==5) {
+                   $this->email->subject('Job Order Modification is required'.date('Y-m-d'));
+                $this->email->message("Dear ".$receive_email[0]->name.", <br> Job Order needs Modification, Please Follow Below Notes. <br>".$notes);
+                }
+                else
+                {
+                    $this->email->subject('Job Order Closed Successfully on '.date('Y-m-d'));
+                    $jo_close = $this->common_model->jo_closed($j_id);
+                   $txt = '';
+                    $txt.= "<style>
+table {
+  border-collapse: collapse;
+}
+
+table, td, th {
+  border: 1px solid black;
+}
+</style><table><tr><th>Title</th><th>EMployee Name</th><th>Client Name</th><th>Job Type</th><th>Date Added</th><th>Completed Date</th>";
+                    $txt .= "<tr><td>".$jo_close[0]->title."</td><td>".$jo_close[0]->emp_name."</td><td>".$jo_close[0]->client_name."</td><td>".$jo_close[0]->jo_type."</td><td>".$jo_close[0]->date_added."</td><td>".$jo_close[0]->last_updated."</td></tr></table>";
+                $this->email->message("Dear ".$receive_email[0]->name.", <br> Job Order Successfully closed! <br>".$txt);
+                }
+                if($this->email->send())
+                {
+
+                }
+                else
+                {
+                    echo $this->email->print_debugger();
+                    die;
+                }
                  $where = array("id"=>$j_id);
                  $data = array("client_id"=>$emp_id,"notes"=>$notes,"status"=>$status,"is_new"=>0);
                  $this->common_model->updateWhere($where,$data,'job_order');

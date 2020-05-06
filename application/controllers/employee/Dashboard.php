@@ -68,10 +68,43 @@ public function edit_job_order_deatails($value='')
                  $notes = $this->input->post('notes');
                  $status = $this->input->post('status');
                  $where = array("id"=>$j_id);
-                 $data = array("emp_id"=>$emp_id,"notes"=>$notes,"status"=>$status,"is_new"=>0);
+                 $data = array("emp_id"=>$emp_id,"notes"=>$notes,"status"=>$status,"is_new"=>0,"last_updated"=>date('Y-m-d H:m:i'));
                  $this->common_model->updateWhere($where,$data,'job_order');
                  $data1 = array("j_id"=>$j_id,"emp_id"=>$emp_id,"notes"=>$notes,"status"=>$status,"date_added"=>date("Y-m-d H:m:i"));
                  $this->common_model->insertRow($data1,'extra_job_order');
+
+                 $client_email = $this->common_model->getWhere(array('id'=>$j_id),'job_order');
+                 $receive_email = $this->common_model->getWhere(array('id'=>$client_email[0]->client_id),'user');
+                 $this->load->library('email');
+            
+                $this->email->initialize(email_config());
+
+                $where = array("active"=>1); 
+
+                $to_emails = $this->common_model->getWhere($where,'emails');
+                $emails ='';
+                foreach ($to_emails as $email) {
+                   $emails .= $email->email.",";
+                }
+                $emails = rtrim($emails, ','); 
+                 
+                $this->email->from($this->session->userdata('email'),$this->session->userdata('name'));
+                $this->email->to($receive_email[0]->email);
+                $this->email->cc($emails);
+                if($status==1)
+                {
+                $this->email->subject('Job Order Review '.date('Y-m-d'));
+                $this->email->message("Dear ".$receive_email[0]->name.", <br> Job Order is Under Review, Please Follow Below Notes and Please confirm the job order is close <br>".$notes);
+                } 
+                if($this->email->send())
+                {
+
+                }
+                else
+                {
+                    echo $this->email->print_debugger();
+                    die;
+                }
              }
 
 public function get_job_order_details($value='')
@@ -102,6 +135,7 @@ public function get_job_order_details($value='')
       $this->zip->download(time().".zip");
 
     }
+  
 
  
  

@@ -1,9 +1,11 @@
-<?php $this->load->view('inc/common_header') ?>
+<?php $this->load->view('inc/common_header'); ?>
 
 
 <body>
 
- <?php $this->load->view("inc/header_nav");?>
+ <?php $this->load->view("inc/header_nav");
+
+ ?>
   
 <div class="container">    
     <div class="page-header">
@@ -56,7 +58,7 @@
             data:{id:v},
             success:function(data){
             var box = $("#m_pre_data");
-                box.val(box.val() + data); 
+                box.val(data); 
             }
         });
     }
@@ -86,10 +88,11 @@
                 <textarea class="form-control" rows="5" id="m_notes" name="m_notes"></textarea>
                 </div> 
                 <div class="col-md-6 form-group">
-                    <label for="city_id">Status:</label>
+                    <label for="status">Status:</label>
                     <select class="form-control" id="status" name="status" required="required">
                         <option value="">Select</option>
                         <option value="2">pending</option>
+                         <option value="5">Modify</option>
                         <option value="4">finshed</option>
 
                       </select>
@@ -129,7 +132,8 @@
             url: "<?php echo base_url()?>client/dashboard/edit_job_order_deatails",
             data:data,
             success:function(data){
-                location.reload();
+              console.log(data);
+              location.reload();
             }
         });
   } 

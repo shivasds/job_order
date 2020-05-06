@@ -20,6 +20,7 @@ if($this->session->userdata('user_type')==1)
       <li class="<?php if($segment=="new_Job_orders"){ echo 'active';}?>"><a href="<?=base_url('admin/dashboard/new_Job_orders');?>">New Job Orders</a></li> 
       <li class="<?php if($segment=="pending_Job_orders"){ echo 'active';}?>"><a href="<?=base_url('admin/dashboard/pending_Job_orders');?>">Pending Job Orders</a></li>
       <li class="<?php if($segment=="finished_Job_orders"){ echo 'active';}?>"><a href="<?=base_url('admin/dashboard/finished_Job_orders');?>">Finshed Job Orders</a></li>
+      <li class="<?php if($segment=="emails"){ echo 'active';}?>"><a href="<?=base_url('admin/dashboard/emails');?>">To Emails</a></li>
  
     </ul>
 
