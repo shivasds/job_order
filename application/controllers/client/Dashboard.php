@@ -43,7 +43,8 @@ class Dashboard extends CI_Controller {
                 );
 
                 $property_id = $this->common_model->insertRow($data, 'job_order'); 
-                
+                 $data = array("j_id"=>$property_id,"notes"=>$this->input->post('notes'),'emp_id'=>$this->input->post('client_id'), "date_added"=>date('Y-m-d H:m:i'));
+                 $this->common_model->insertRow($data,'extra_job_order');
                 $gallery = $this->input->post('images');
                 //print_r($gallery);die;
                 if ($gallery) {
@@ -97,8 +98,10 @@ class Dashboard extends CI_Controller {
          public function pending_Job_orders($value='')
          {
             $data['title'] = "Client Pending Job Orders ";
-             $where = array("status"=>1,"client_id"=>$this->session->userdata('id'),"emp_id!="=>0);
-             $data['pending'] = $this->common_model->getWhere($where,'job_order');
+             // $where = array("status"=>1,"client_id"=>$this->session->userdata('id'),"emp_id!="=>0);
+             // $data['pending'] = $this->common_model->getWhere($where,'job_order');
+            $data['pending'] = $this->common_model->pending_Job_orders_client('job_order');
+
              $where = array("active"=>1);
             $data['status'] = $this->common_model->getWhere($where,'status');
              $this->load->view("client/pending_Job_orders",$data);
@@ -230,7 +233,8 @@ table, td, th {
                     die;
                 }
                  $where = array("id"=>$j_id);
-                 $data = array("client_id"=>$emp_id,"notes"=>$notes,"status"=>$status,"is_new"=>0);
+                 //$data = array("client_id"=>$emp_id,"notes"=>$notes,"status"=>$status,"is_new"=>0);
+                 $data = array("client_id"=>$emp_id,"status"=>$status,"is_new"=>0);
                  $this->common_model->updateWhere($where,$data,'job_order');
                  $data1 = array("j_id"=>$j_id,"emp_id"=>$emp_id,"notes"=>$notes,"status"=>$status,"date_added"=>date("Y-m-d H:m:i"));
                  $this->common_model->insertRow($data1,'extra_job_order');

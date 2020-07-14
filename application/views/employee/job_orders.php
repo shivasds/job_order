@@ -6,25 +6,34 @@
   
 <div class="container">    
     <div class="page-header">
-        <h1>Welcome To The New!</h1>
+        <h1>Welcome To The New Job Orders!</h1>
     </div>  
 </div>
 <div class="container">
                 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th class="priority-1" style="width:30%;">No</th>
-                            <th class="priority-2" style="width:30%;">Title</th> 
+                            <th class="priority-1" style="width:5%;">No</th>
+                            <th class="priority-2" style="width:15%;">Title</th> 
+                            <th class="priority-2" style="width:15%;">Job Type</th> 
+                            <th class="priority-2" style="width:15%;">Client Name</th> 
+                            <th class="priority-2" style="width:30%;">Notes</th> 
+                            <th class="priority-2" style="width:10%;">Date</th> 
                             <th class="priority-9" style="width:30%;">More</th>  
                         </tr>
                     </thead> 
                     <tbody>
                         <?php if(count($new)>0){
                             $i=1;
+                            //print_r($new);die;
                             foreach($new as $new){ ?>
                                 <tr>
-                                    <td class="priority-1" style="width:30%;"><?php echo $i++; ?></td>
-                                    <td class="priority-2" style="width:30%;"><?php echo $new->title; ?></td>  
+                                    <td class="priority-1" style="width:5%;"><?php echo $i++; ?></td>
+                                    <td class="priority-2" style="width:15%;"><?php echo $new->title; ?></td>
+                                    <td class="priority-2" style="width:15%;"><?php echo $new->type; ?></td>
+                                    <td class="priority-2" style="width:15%;"><?php echo $new->client_name; ?></td>
+                                    <td class="priority-2" style="width:30%;"><?php echo $new->notes; ?></td>
+                                    <td class="priority-2" style="width:10%;"><?php echo date('Y-m-d',strtotime($new->date_added)); ?></td>    
                                     <td class="priority-8" style="width:30%;vertical-align:middle;"><button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal_edit" onclick="edit('<?php echo $new->id; ?>')">More</button></td> 
                                 </tr>
                          <?php } 
@@ -33,7 +42,7 @@
                           {
                             ?>
                               <tr>
-                                    <td class="priority-1" colspan="3" style="text-align: center;">No Data Found</td> 
+                                    <td class="priority-1" colspan="7" style="text-align: center;">No Data Found</td> 
                                 </tr>
                           <?php
                            } ?>

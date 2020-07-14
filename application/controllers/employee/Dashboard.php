@@ -28,8 +28,11 @@ class Dashboard extends CI_Controller {
  public function new_Job_orders($value='')
  {
     $data['title'] = "Employee New job Orders";
-    $where = array("is_new"=>1,"emp_id" => $this->session->userdata('id'));
-    $data['new'] = $this->common_model->getWhere($where,'job_order');
+    // $where = array("is_new"=>1,"emp_id" => $this->session->userdata('id'));
+    // $data['new'] = $this->common_model->getWhere($where,'job_order');
+    $data['new'] = $this->common_model->new_Job_orders_employee('job_order');
+
+    
     if($this->input->post())
     {
         $id = $this->input->get_post("id");
@@ -47,7 +50,7 @@ class Dashboard extends CI_Controller {
  public function pending_Job_orders($value='')
  {
     $data['title'] = "Employee Pending job Orders";
-    $where = array("status"=>2,"emp_id"=>$this->session->userdata('id'),"is_new"=>0);
+    $where = array("status= 2 or status ="=>5,"emp_id"=>$this->session->userdata('id'),"is_new"=>0);
     $data['pending'] = $this->common_model->getWhere($where,'job_order');
     $where = array("active"=>1);
     $data['status'] = $this->common_model->getWhere($where,'status');
@@ -68,7 +71,8 @@ public function edit_job_order_deatails($value='')
                  $notes = $this->input->post('notes');
                  $status = $this->input->post('status');
                  $where = array("id"=>$j_id);
-                 $data = array("emp_id"=>$emp_id,"notes"=>$notes,"status"=>$status,"is_new"=>0,"last_updated"=>date('Y-m-d H:m:i'));
+                 //$data = array("emp_id"=>$emp_id,"notes"=>$notes,"status"=>$status,"is_new"=>0,"last_updated"=>date('Y-m-d H:m:i'));
+                 $data = array("emp_id"=>$emp_id,"status"=>$status,"is_new"=>0,"last_updated"=>date('Y-m-d H:m:i'));
                  $this->common_model->updateWhere($where,$data,'job_order');
                  $data1 = array("j_id"=>$j_id,"emp_id"=>$emp_id,"notes"=>$notes,"status"=>$status,"date_added"=>date("Y-m-d H:m:i"));
                  $this->common_model->insertRow($data1,'extra_job_order');

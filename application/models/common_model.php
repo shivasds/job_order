@@ -100,6 +100,68 @@ public function duplicate_check($table,$name){
         return $query?$query->result():false;
        // echo $this->db->last_query();
     }
+    function new_Job_orders($table){
+        $this->db->select('j.id as id,j.title as title, j.notes as notes, j.date_added as date_added,o.order_type as type,u.name as client_name');
+        $this->db->from('job_order as j');
+        $this->db->where('j.is_new',1); 
+        $this->db->where('j.emp_id',0); 
+        $this->db->join('user as u','u.id=j.client_id', 'left');
+        $this->db->join('order_types as o','o.id=j.status', 'left');
+        $this->db->order_by('j.date_added','desc');
+        $query=$this->db->get();
+        
+        return $query?$query->result():false;
+    }
+    function new_Job_orders_employee($table){
+        $this->db->select('j.id as id,j.title as title, j.notes as notes, j.date_added as date_added,o.order_type as type,u.name as client_name');
+        $this->db->from('job_order as j');
+        $this->db->where('j.is_new',1); 
+        $this->db->where('j.emp_id',$this->session->userdata('id')); 
+        $this->db->join('user as u','u.id=j.client_id', 'left');
+        $this->db->join('order_types as o','o.id=j.status', 'left');
+        $this->db->order_by('j.date_added','desc');
+        $query=$this->db->get();
+        
+        return $query?$query->result():false;
+    }
+    function pending_Job_orders_client($table){
+        $this->db->select('j.id as id,j.title as title, j.notes as notes, date(j.last_updated) as last_update,o.order_type as type,u.name as emp_name');
+        $this->db->from('job_order as j');
+        $this->db->where('j.status',1); 
+        $this->db->where('j.emp_id!=',0); 
+        $this->db->where('j.client_id',$this->session->userdata('id')); 
+        $this->db->join('user as u','u.id=j.emp_id', 'left');
+        $this->db->join('order_types as o','o.id=j.status', 'left');
+        $this->db->order_by('j.date_added','desc');
+        $query=$this->db->get();
+        
+        return $query?$query->result():false;
+    }
+    function pending_Job_orders_admin($where,$table){
+        $this->db->select('j.id as id,j.title as title, j.notes as notes, date(j.last_updated) as last_update,o.order_type as type,u.name as emp_name, date(date_added) as date_added');
+        $this->db->from('job_order as j');
+        $this->db->where($where);  
+        $this->db->join('user as u','u.id=j.emp_id', 'left');
+        $this->db->join('order_types as o','o.id=j.status', 'left');
+        $this->db->order_by('j.date_added','desc');
+        $query=$this->db->get();
+        
+        return $query?$query->result():false;
+    }
+    function finished_Job_orders_admin($where,$table){
+        $this->db->select('j.id as id,j.title as title, j.notes as notes, date(j.last_updated) as last_update,o.order_type as type,u.name as emp_name, date(date_added) as date_added');
+        $this->db->from('job_order as j');
+        $this->db->where($where);  
+        $this->db->join('user as u','u.id=j.emp_id', 'left');
+        $this->db->join('order_types as o','o.id=j.status', 'left');
+        $this->db->order_by('j.date_added','desc');
+        $query=$this->db->get();
+        
+        return $query?$query->result():false;
+    }
+
+
+    
     
 }
 

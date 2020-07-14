@@ -16,18 +16,27 @@
                 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
                     <thead>
                         <tr>
-                            <th class="priority-1" style="width:30%;">No</th>
-                            <th class="priority-2" style="width:30%;">Title</th> 
+                            <th class="priority-1" style="width:5%;">No</th>
+                            <th class="priority-2" style="width:15%;">Title</th> 
+                            <th class="priority-2" style="width:15%;">Job Type</th> 
+                            <th class="priority-2" style="width:15%;">Employee Name</th> 
+                            <th class="priority-2" style="width:30%;">Notes</th> 
+                            <th class="priority-2" style="width:10%;">Last Update</th> 
                             <th class="priority-9" style="width:30%;">Pending</th>  
                         </tr>
                     </thead> 
                     <tbody>
                         <?php if(count($pending)>0){
+                          //print_r($pending);die;
                             $i=1;
                             foreach($pending as $pending){ ?>
                                 <tr>
-                                    <td class="priority-1" style="width:30%;"><?php echo $i++; ?></td>
-                                    <td class="priority-2" style="width:30%;"><?php echo $pending->title; ?></td>  
+                                    <td class="priority-1" style="width:5%;"><?php echo $i++; ?></td>
+                                    <td class="priority-2" style="width:15%;"><?php echo $pending->title; ?></td>
+                                    <td class="priority-2" style="width:15%;"><?php echo $pending->type; ?></td>
+                                    <td class="priority-2" style="width:15%;"><?php echo $pending->emp_name; ?></td>
+                                    <td class="priority-2" style="width:30%;"><?php echo $pending->notes; ?></td>
+                                    <td class="priority-2" style="width:10%;"><?php echo $pending->last_update; ?></td>   
                                     <td class="priority-8" style="width:30%;vertical-align:middle;"><button type="button" class="btn btn-info" data-toggle="modal" data-target="#modal_edit" onclick="edit('<?php echo $pending->id; ?>')">Pending Job Orders</button></td> 
                                 </tr>
                             <?php } 

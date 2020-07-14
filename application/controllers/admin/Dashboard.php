@@ -139,8 +139,9 @@ class Dashboard extends CI_Controller {
                 public function new_Job_orders($value='')
              {
                 $data['title'] = "Admin New job Orders";
-                $where = array("is_new"=>1,"emp_id" => 0);
-                $data['new'] = $this->common_model->getWhere($where,'job_order');
+               // $where = array("is_new"=>1,"emp_id" => 0);
+               // $data['new'] = $this->common_model->getWhere($where,'job_order');
+                 $data['new'] = $this->common_model->new_Job_orders('job_order');
                 $where1= array("type"=>2);
                 $data['emp'] = $this->common_model->getWhere($where1,'user');
                  $this->load->view("admin/job_orders",$data);
@@ -148,15 +149,19 @@ class Dashboard extends CI_Controller {
              public function pending_Job_orders($value='')
              {
                 $data['title'] = "Admin Pending job Orders";
-                $where = array("status"=>2);
-             $data['pending'] = $this->common_model->getWhere($where,'job_order');
+                $where = array("status= 1 or status = 2 or status = "=>5);
+                // $data['pending'] = $this->common_model->getWhere($where,'job_order');
+                $data['pending'] = $this->common_model->pending_Job_orders_admin($where,'job_order');
+             
                  $this->load->view("admin/pending_Job_orders",$data);
              }
              public function finished_job_orders($value='')
              {
                 $data['title'] = "Admin Finished job Orders";
-                $where = array("status"=>4);
-                $data['finished'] = $this->common_model->getWhere($where,'job_order');
+                // $where = array("status"=>4);
+                // $data['finished'] = $this->common_model->getWhere($where,'job_order');
+                 $where = array("status"=>4);
+                $data['finished'] = $this->common_model->finished_Job_orders_admin($where,'job_order');
                  $this->load->view("admin/finished_job_orders",$data);
              }
 
@@ -202,10 +207,11 @@ class Dashboard extends CI_Controller {
                 else
                 {
                     echo $this->email->print_debugger();
-                    die;
+                    //die;
                 } 
                  $where = array("id"=>$j_id);
-                 $data = array("emp_id"=>$emp_id,"notes"=>$notes);
+                 //$data = array("emp_id"=>$emp_id,"notes"=>$notes);
+                 $data = array("emp_id"=>$emp_id);
                  $this->common_model->updateWhere($where,$data,'job_order');
                  $data1 = array("j_id"=>$j_id,"emp_id"=>$this->session->userdata('id'),"notes"=>$notes,"status"=>2,"date_added"=>date("Y-m-d H:m:i"));
                  $this->common_model->insertRow($data1,'extra_job_order');
@@ -231,5 +237,19 @@ class Dashboard extends CI_Controller {
                 }
                 $this->load->view("admin/emails",$data);
                 }
+                public function get_job_order_details($value='')
+    {
+      $id = $this->input->get_post("id");
+      $indiv_callback_data = $this->common_model->get_JO_data($id); 
+        $previous_callback = "";
+        foreach ($indiv_callback_data as $callback_data) {
+            $previous_callback .= $callback_data->status."****".$callback_data->date_added."****".$callback_data->user_name;
+            $previous_callback .= "\n---------------------------------\n";
+           $previous_callback .= $callback_data->notes."\n\n";
+        }
+        $data['previous_callback'] = $previous_callback;
+        print_r($data['previous_callback']);
+
+    }
  
   }
