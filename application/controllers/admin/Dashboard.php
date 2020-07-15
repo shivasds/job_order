@@ -22,8 +22,17 @@ class Dashboard extends CI_Controller {
     }
  public function index($value='')
  {
-    $data['title'] = "Dashboard";
+    
+    if($this->session->userdata('username')=='admin')
+    { 
+      $data['title'] = "Dashboard";
    $this->load->view("admin/dashboard",$data);
+ }
+ else
+ {
+  //$this->new_Job_orders();
+  redirect('admin/dashboard/new_Job_orders');
+ }
  }
  public function employees($value='')
  {

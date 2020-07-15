@@ -12,7 +12,8 @@ if($this->session->userdata('user_type')==1)
     </div>
     <?php
     $segment = $this->uri->segment('3');
-    ?>
+     if($this->session->userdata('username')=='admin')
+    { ?>
     <ul class="nav navbar-nav">
       <li class="<?php if($segment==""){ echo 'active';}?>"><a href="<?=base_url('admin/dashboard');?>">Home</a></li>
       <li class="<?php if($segment=="employees"){ echo 'active';}?>"><a href="<?=base_url('admin/dashboard/employees');?>">Empolyees</a></li>
@@ -23,7 +24,18 @@ if($this->session->userdata('user_type')==1)
       <li class="<?php if($segment=="emails"){ echo 'active';}?>"><a href="<?=base_url('admin/dashboard/emails');?>">To Emails</a></li>
  
     </ul>
-
+    <?php
+  }
+  else
+  {
+    ?>
+    <ul class="nav navbar-nav">
+      <li class="<?php if($segment=="new_Job_orders"){ echo 'active';}?>"><a href="<?=base_url('admin/dashboard/new_Job_orders');?>">New Job Orders</a></li> 
+      <li class="<?php if($segment=="pending_Job_orders"){ echo 'active';}?>"><a href="<?=base_url('admin/dashboard/pending_Job_orders');?>">Pending Job Orders</a></li>
+      <li class="<?php if($segment=="finished_Job_orders"){ echo 'active';}?>"><a href="<?=base_url('admin/dashboard/finished_Job_orders');?>">Finshed Job Orders</a></li>
+    <?php
+  }
+?>
      <div class="dropdown" style="float: right">
         <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
          <i class="fa fa-chevron-down"></i>
