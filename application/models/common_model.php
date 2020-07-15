@@ -138,10 +138,11 @@ public function duplicate_check($table,$name){
         return $query?$query->result():false;
     }
     function pending_Job_orders_admin($where,$table){
-        $this->db->select('j.id as id,j.title as title, j.notes as notes, date(j.last_updated) as last_update,o.order_type as type,u.name as emp_name, date(date_added) as date_added');
+        $this->db->select('j.id as id,j.title as title, j.notes as notes, date(j.last_updated) as last_update,o.order_type as type,u.name as emp_name,u1.name as client_name, date(date_added) as date_added');
         $this->db->from('job_order as j');
         $this->db->where($where);  
         $this->db->join('user as u','u.id=j.emp_id', 'left');
+        $this->db->join('user as u1','u1.id=j.client_id', 'left');
         $this->db->join('order_types as o','o.id=j.status', 'left');
         $this->db->order_by('j.date_added','desc');
         $query=$this->db->get();
@@ -149,10 +150,11 @@ public function duplicate_check($table,$name){
         return $query?$query->result():false;
     }
     function finished_Job_orders_admin($where,$table){
-        $this->db->select('j.id as id,j.title as title, j.notes as notes, date(j.last_updated) as last_update,o.order_type as type,u.name as emp_name, date(date_added) as date_added');
+        $this->db->select('j.id as id,j.title as title, j.notes as notes, date(j.last_updated) as last_update,o.order_type as type,u.name as emp_name,u1.name as client_name, date(date_added) as date_added');
         $this->db->from('job_order as j');
         $this->db->where($where);  
         $this->db->join('user as u','u.id=j.emp_id', 'left');
+        $this->db->join('user as u1','u1.id=j.client_id', 'left');
         $this->db->join('order_types as o','o.id=j.status', 'left');
         $this->db->order_by('j.date_added','desc');
         $query=$this->db->get();

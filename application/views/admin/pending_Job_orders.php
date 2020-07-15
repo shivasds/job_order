@@ -16,7 +16,8 @@
                             <th class="priority-1" style="width:5%;">No</th>
                              <th class="priority-2" style="width:15%;">Title</th> 
                             <th class="priority-2" style="width:15%;">Job Type</th> 
-                            <th class="priority-2" style="width:15%;">Employee Name</th> 
+                            <th class="priority-2" style="width:15%;">Employee Name</th>
+                            <th class="priority-2" style="width:15%;">Client Name</th> 
                             <th class="priority-2" style="width:30%;">Notes</th>
                             <th class="priority-2" style="width:30%;">Date Added</th> 
                             <th class="priority-2" style="width:10%;">Last Update</th> 
@@ -32,6 +33,7 @@
                                      <td class="priority-2" style="width:15%;"><?php echo $pending->title; ?></td>
                                     <td class="priority-2" style="width:15%;"><?php echo $pending->type; ?></td>
                                     <td class="priority-2" style="width:15%;"><?php echo $pending->emp_name; ?></td>
+                                     <td class="priority-2" style="width:15%;"><?php echo $pending->client_name; ?></td>
                                     <td class="priority-2" style="width:30%;"><?php echo $pending->notes; ?></td>
                                     <td class="priority-2" style="width:10%;"><?php echo $pending->date_added; ?></td>  
                                     <td class="priority-2" style="width:10%;"><?php echo $pending->last_update; ?></td>   

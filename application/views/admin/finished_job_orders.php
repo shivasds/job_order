@@ -6,7 +6,7 @@
   
 <div class="container">    
     <div class="page-header">
-        <h1>Welcome To The Pending!</h1>
+        <h1>Welcome To The Finished Job Orders!</h1>
     </div>  
 </div>
 <div class="container">
@@ -16,7 +16,8 @@
                             <th class="priority-1" style="width:5%;">No</th>
                              <th class="priority-2" style="width:15%;">Title</th> 
                             <th class="priority-2" style="width:15%;">Job Type</th> 
-                            <th class="priority-2" style="width:15%;">Employee Name</th> 
+                            <th class="priority-2" style="width:15%;">Employee Name</th>
+                            <th class="priority-2" style="width:15%;">Client Name</th> 
                             <th class="priority-2" style="width:30%;">Notes</th>
                             <th class="priority-2" style="width:30%;">Date Added</th> 
                             <th class="priority-2" style="width:10%;">Last Update</th> 
@@ -32,6 +33,7 @@
                                      <td class="priority-2" style="width:15%;"><?php echo $finished->title; ?></td>
                                     <td class="priority-2" style="width:15%;"><?php echo $finished->type; ?></td>
                                     <td class="priority-2" style="width:15%;"><?php echo $finished->emp_name; ?></td>
+                                    <td class="priority-2" style="width:15%;"><?php echo $finished->client_name; ?></td>
                                     <td class="priority-2" style="width:30%;"><?php echo $finished->notes; ?></td>
                                     <td class="priority-2" style="width:10%;"><?php echo $finished->date_added; ?></td>  
                                     <td class="priority-2" style="width:10%;"><?php echo $finished->last_update; ?></td>   

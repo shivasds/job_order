@@ -5,6 +5,8 @@
     <div class="page-header">
         <h1>Manage Clients</h1>
     </div> 
+        <?php if($this->session->userdata('username')=='admin')
+    { ?>
       <div id="myDIV" style="display: block;">
              <form name="save_seller_form" id="save_seller_form" method="POST" enctype="multipart/form-data">
                 <div class="col-sm-6 form-group">
@@ -45,6 +47,7 @@
       </div>
     </div>
     <br><br>
+<?php } ?>
     <div class="container">
     <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
         <thead>
