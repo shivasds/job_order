@@ -100,7 +100,7 @@ public function duplicate_check($table,$name){
         return $query?$query->result():false;
        // echo $this->db->last_query();
     }
-    function new_Job_orders($table){
+    function new_Job_orders($table=''){
         $this->db->select('j.id as id,j.title as title, j.notes as notes, j.date_added as date_added,o.order_type as type,u.name as client_name');
         $this->db->from('job_order as j');
         $this->db->where('j.is_new',1); 
@@ -112,7 +112,7 @@ public function duplicate_check($table,$name){
         
         return $query?$query->result():false;
     }
-    function new_Job_orders_employee($table){
+    function new_Job_orders_employee($table=''){
         $this->db->select('j.id as id,j.title as title, j.notes as notes, j.date_added as date_added,o.order_type as type,u.name as client_name');
         $this->db->from('job_order as j');
         $this->db->where('j.is_new',1); 
